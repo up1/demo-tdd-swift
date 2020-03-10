@@ -19,9 +19,28 @@ class DEmo2Tests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testStartWithInclude() {
+        let m =  try! MyRange(input: "[1,5]")
+        let result = m.startWithInclude()
+        XCTAssertTrue(result, "Must start with [")
+    }
+    
+    func testStartWithIncludeAndOne() {
+        let m = try! MyRange(input: "[1,5]")
+        let result = m.getStartNumber()
+        XCTAssertEqual(result, 1)
+    }
+    
+    func testErrorWithOutStart() {
+        var thrownError: Error?
+        XCTAssertThrowsError(try MyRange(input: "1,5]")) {
+            thrownError = $0
+        }
+        XCTAssertTrue(
+            thrownError is MyRange.InputError,
+            "Unexpected error type: \(type(of: thrownError))"
+        )
+        XCTAssertEqual(thrownError as? MyRange.InputError, .emptyStartText)
     }
 
     func testPerformanceExample() {
